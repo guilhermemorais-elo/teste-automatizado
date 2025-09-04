@@ -14,12 +14,20 @@ import com.example.crud.application.dto.UserUpdateDTO;
 import com.example.crud.application.exception.UserNotFoundException;
 import com.example.crud.application.repository.UserRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final UserRepository userRepository;
+
+    private static final String API_SECRET = "12345-secret-key";
 
     @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers() {
@@ -66,5 +74,14 @@ public class UserService {
 
     private UserDTO toDTO(User user) {
         return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getCreatedAt());
+    }
+
+    public List<User> findUsersByName(String name) {
+        String query = "SELECT u FROM User u WHERE u.name = '" + name + "'";
+        return entityManager.createQuery(query, User.class).getResultList();
+    }
+
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 }
