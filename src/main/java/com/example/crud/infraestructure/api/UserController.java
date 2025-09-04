@@ -50,6 +50,12 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(dto));
     }
 
+    @PostMapping
+    @Operation(summary = "Create a new user 2")
+    public ResponseEntity<UserDTO> createUser2(@Valid @RequestBody UserCreateDTO dto) {
+        return ResponseEntity.ok(userService.createUser(dto));
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing user")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
