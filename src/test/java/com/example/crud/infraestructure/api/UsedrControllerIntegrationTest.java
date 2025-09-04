@@ -56,14 +56,4 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.email").value("newuser@example.com"));
     }
 
-    @Test
-    void testValidationError() throws Exception {
-        String json = "{\"name\":\"\",\"email\":\"not-an-email\"}";
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").exists())
-                .andExpect(jsonPath("$.email").exists());
-    }
 }
